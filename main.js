@@ -3,10 +3,10 @@ var http = require('http'); //http module from node.js
 var io;
 
 
-var port = 3003; //process.env.PORT; //port on which we will serve the app
-var port_socket = 3003; //process.env.PORT; //port on which socket server will start
-// var port = process.env.PORT; //port on which we will serve the app
-// var port_socket = process.env.PORT; //port on which socket server will start
+// var port = 3003; //process.env.PORT; //port on which we will serve the app
+// var port_socket = 3003; //process.env.PORT; //port on which socket server will start
+var port = process.env.PORT; //port on which we will serve the app
+var port_socket = process.env.PORT; //port on which socket server will start
 
 var orders = [];
 var queue = 0;
