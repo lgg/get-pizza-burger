@@ -2,14 +2,23 @@
   "name": "getpizzaburger",
   "version": "1.0.0",
   "description": "",
-  "main": "js.js",
-  "scripts": {
-    "start": "node main.js"
-  },
-  "author": "",
-  "license": "ISC",
+  "main": "main.js",
   "dependencies": {
     "express": "^4.14.0",
     "socket.io": "^1.6.0"
-  }
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lgg/get-pizza-burger.git"
+  },
+  "author": "lgg",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lgg/get-pizza-burger/issues"
+  },
+  "homepage": "https://github.com/lgg/get-pizza-burger#readme"
 }
