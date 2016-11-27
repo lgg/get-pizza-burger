@@ -27,11 +27,11 @@ document.addEventListener('DOMContentLoaded', function () {
     gid("btn").addEventListener('click', sendClaim);
 });
 
-function sendClaim(){
+function sendClaim() {
     send('claim');
 }
 
-function sendGot(){
+function sendGot() {
     send('got');
     window.location.href = 'https://github.com/lgg/get-pizza-burger';
 }
@@ -59,6 +59,11 @@ function registerSocket() {
         hide('btn');
         hide('sub');
         socket.off('newclaim');
+
+        //for that reason if somebody open app, claim burger and then close it immediately
+        setTimeout(function () {
+            ready();
+        }, Math.round(amount / 4) * 60 * 1000);
     });
 
     socket.on('got', function (data) {
@@ -76,20 +81,24 @@ function update(amount) {
     gid('amount_div').textContent = amount;
     var time = Math.round(amount / 4);
     gid('time_div').textContent = time;
-    if(time < 1 && personalNum){
-        addClass(gid('up'), 'up_text');
-        addClass(gid('btn'), 'white_btn');
-        gid('btn').textContent = "I got my burger";
-        hide('sub');
-        hide('times_info');
-        hide('title');
-
-        gid("btn").removeEventListener('click', sendClaim);
-        gid("btn").addEventListener('click', sendGot);
+    if (time < 1 && personalNum) {
+        ready();
     }
 }
 
-function hide(id){
+function ready(){
+    addClass(gid('up'), 'up_text');
+    addClass(gid('btn'), 'white_btn');
+    gid('btn').textContent = "I got my burger";
+    hide('sub');
+    hide('times_info');
+    hide('title');
+
+    gid("btn").removeEventListener('click', sendClaim);
+    gid("btn").addEventListener('click', sendGot);
+}
+
+function hide(id) {
     addClass(gid(id), 'none');
 }
 
@@ -97,7 +106,7 @@ function gid(id) {
     return document.getElementById(id);
 }
 
-function addClass(el, className){
+function addClass(el, className) {
     if (el.classList)
         el.classList.add(className);
     else
