@@ -10,7 +10,7 @@ window.Promise = window.Promise || window.ES6Promise.Promise; //fix for promises
 
 var amount = 0,
     before = false,
-    personalNum = null;
+    personalNum = false;
 
 /**
  * Socket.io emit
@@ -24,10 +24,17 @@ function send(type, val) {
 document.addEventListener('DOMContentLoaded', function () {
     registerSocket();
 
-    gid("btn").addEventListener('click', function () {
-        send('claim');
-    });
+    gid("btn").addEventListener('click', sendClaim);
 });
+
+function sendClaim(){
+    send('claim');
+}
+
+function sendGot(){
+    send('got');
+    window.location.href = 'https://github.com/lgg/get-pizza-burger';
+}
 
 function registerSocket() {
     send('register');
@@ -39,15 +46,18 @@ function registerSocket() {
     });
 
     socket.on('newclaim', function (data) {
-        amount = data.queue;
-        update(amount);
+        if (!before) {
+            amount = data.queue;
+            update(amount);
+        }
     });
 
     socket.on('you are', function (data) {
         personalNum = data.num;
         before = amount - 1;
-        addClass(gid('btn'), 'none');
-        addClass(gid('sub'), 'none');
+        update(before);
+        hide('btn');
+        hide('sub');
         socket.off('newclaim');
     });
 
@@ -64,7 +74,23 @@ function registerSocket() {
 
 function update(amount) {
     gid('amount_div').textContent = amount;
-    gid('time_div').textContent = Math.round(amount / 4);
+    var time = Math.round(amount / 4);
+    gid('time_div').textContent = time;
+    if(time < 1 && personalNum){
+        addClass(gid('up'), 'up_text');
+        addClass(gid('btn'), 'white_btn');
+        gid('btn').textContent = "I got my burger";
+        hide('sub');
+        hide('times_info');
+        hide('title');
+
+        gid("btn").removeEventListener('click', sendClaim);
+        gid("btn").addEventListener('click', sendGot);
+    }
+}
+
+function hide(id){
+    addClass(gid(id), 'none');
 }
 
 function gid(id) {
